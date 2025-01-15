@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-gray-800 font-sans">
+    <!-- Navbar -->
+    <nav class="flex justify-between items-center px-32 py-4 border-b border-gray-200">
+        <h1 class="text-xl font-bold">PurrfectMatch</h1>
+        <ul class="flex space-x-6">
+            <li><a href="{{ url_for('index') }}" class="hover:underline">Home</a></li>
+            <li><a href="{{ url_for('quiz', question_id=1) }}" class="hover:underline">Find Your Match</a></li>
+            <li><a href="{{ url_for('browse') }}" class="hover:underline">Browse Pets</a></li>
+            <li><a href="#" class="hover:underline">Pet Care Guide</a></li>
+            <li><a href="#" class="hover:underline">About Us</a></li>
+        </ul>
+        <button class="border border-gray-800 rounded-lg px-4 py-2 hover:bg-gray-100">
+            Login
+        </button>
+    </nav>
+     <!-- Results -->
+  <div class="max-w-7xl mx-auto mt-8 px-4">
+    <!-- PurrfectMatch Result -->
+    <h1 class="text-4xl font-bold text-left mb-4">PurrfectMatch Results</h1>
+    <section class="bg-gray-200 p-6 rounded-lg shadow-md">
+      <h2 class="text-2xl font-bold mb-4">Your Purrfect Match is....</h2>
+      <div class="flex items-start space-x-4">
+        <img src="{{ first_pet.image_url }}" alt="Your Purrfect Match" class="w-64 h-64 object-cover rounded-md">
+        <div>
+          <h3 class="text-3xl font-bold"> {{ first_pet.name }} </h3>
+          <p class="text-gray-700"> {{ first_pet.age }} | {{ first_pet.gender }} </p>
+          <p class="text-gray-700"> {{ first_pet.breed }} </p>
+          <p class="text-gray-700 mb-4"> {{ first_pet.city }} </p>
+
+          <p class="text-gray-700 mb-8"> {{ explanation }} </p>
+
+          <a href="{{ url_for('profile', pet_id=first_pet.pet_id) }}" class="bg-blue-500 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-600">
+            View Profile
+          </a>
+        </div>
+    
+      </div>
+    </section>
+  
+    <!-- Other Recommendations -->
+    <h2 class="text-2xl font-bold mt-8 mb-4">Other Recommendations:</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        {% for pet in pets[1:] %}
+          <a href="{{ url_for('profile', pet_id=pet.pet_id) }}" class="border rounded-lg shadow-md bg-white overflow-hidden w-full h-80 text-center hover:shadow-lg hover:-translate-y-1 transition transform">
+            <img src="{{ pet.image_url }}" alt="Pet Image" class="w-full h-48 object-cover">
+            <div class="p-4">
+              <h3 class="text-lg font-bold"> {{ pet.name }} </h3>
+              <p class="text-sm text-gray-600">
+                {{ pet.age }} | {{ pet.gender }}<br>
+                {{ pet.breed }} <br>
+                {{ pet.city }}
+              </p>
+            </div>
+            <button class="absolute top-2 right-2 bg-white text-red-500 border border-gray-300 rounded-full shadow-sm p-2 hover:bg-red-100">
+              ❤️
+            </button>
+          </a>
+        {% endfor %}
+      </div>
+</body>
+</html>

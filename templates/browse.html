@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Pets</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-gray-800 font-sans">
+
+    <!-- Navbar -->
+    <nav class="flex justify-between items-center px-32 py-4 border-b border-gray-200">
+        <h1 class="text-xl font-bold">PurrfectMatch</h1>
+        <ul class="flex space-x-6">
+            <li><a href="{{ url_for('index') }}" class="hover:underline">Home</a></li>
+            <li><a href="{{ url_for('quiz', question_id=1) }}" class="hover:underline">Find Your Match</a></li>
+            <li><a href="{{ url_for('browse') }}" class="hover:underline">Browse Pets</a></li>
+            <li><a href="#" class="hover:underline">Pet Care Guide</a></li>
+            <li><a href="#" class="hover:underline">About Us</a></li>
+        </ul>
+        <button class="border border-gray-800 rounded-lg px-4 py-2 hover:bg-gray-100">Login</button>
+    </nav>
+
+    <!-- Page Title -->
+    <div class="px-8 py-6">
+        <h1 class="text-4xl font-bold text-center md:text-left px-32">Browse Pets</h1>
+    </div>
+
+    <!-- Main Layout for Sidebar and Pet Cards -->
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 px-8 justify-start">
+        <!-- Sidebar Filters -->
+        <div class="w-full md:w-1/4 bg-gray-50 p-4 rounded-lg shadow-md">
+            <h2 class="text-xl font-bold mb-4">Filter by:</h2>
+            <form method="GET" action="/browse" class="space-y-4">
+                <div>
+                    <label for="species" class="block font-medium mb-1">Species:</label>
+                    <select name="species" id="species" class="w-full border border-gray-300 rounded p-2">
+                        {% for species in species_list %}
+                            <option value="{{ species }}">{{ species }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label for="age" class="block font-medium mb-1">Age:</label>
+                    <select name="age" id="age" class="w-full border border-gray-300 rounded p-2">
+                        {% for age in age_list %}
+                            <option value="{{ age }}">{{ age }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-blue-500 text-white rounded p-2 mt-4 hover:bg-blue-600">
+                    Apply Filters
+                </button>
+            </form>
+        </div>
+
+        <!-- Pet Profiles Section -->
+        <div class="w-full md:w-3/4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                {% for pet in pets %}
+                <!-- Pet Card -->
+                <a href="{{ url_for('profile', pet_id=pet.pet_id) }}" class="flex flex-col justify-between border rounded-lg shadow-md overflow-hidden w-50 bg-white hover:shadow-lg transition transform hover:-translate-y-1">
+                    <img src="{{ pet.image_url }}" alt="Pet Image" class="w-full h-40 object-cover">
+                    <div class="flex flex-col text-center p-4">
+                        <h3 class="text-lg font-bold"> {{ pet.name }} </h3>
+                        <p class="text-sm text-gray-600">
+                            {{ pet.age }} | {{ pet.gender }}<br>
+                            {{ pet.breed }}<br>
+                            {{ pet.city }} <br>
+                        </p>
+                    </div>
+                    <button class="absolute top-2 right-2 bg-white text-red-500 border border-gray-300 rounded-full shadow-sm p-2 hover:bg-red-100">❤️</button>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+</body>
+</html>
